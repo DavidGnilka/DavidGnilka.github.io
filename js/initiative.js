@@ -8,93 +8,130 @@ const roundDisplay = document.getElementById("round");
 let turnIndex = -1;
 let round = 1;
 
-function addRow(data = {name:"",initiative:0,hp:0,status:""}) {
+function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
 
-const row = document.createElement("tr");
+    const row = document.createElement("tr");
 
-row.innerHTML = `
+    row.innerHTML = `
 <td contenteditable="true">${data.name}</td>
+
 <td contenteditable="true">${data.initiative}</td>
-<td contenteditable="true">${data.hp}</td>
+
+<td class="hpCell">
+<button class="hpBtn" data-dmg="-10">-10</button>
+<button class="hpBtn" data-dmg="-5">-5</button>
+<button class="hpBtn" data-dmg="-1">-1</button>
+
+<span class="hpValue">${data.hp}</span>
+
+<button class="hpBtn" data-dmg="1">+1</button>
+<button class="hpBtn" data-dmg="5">+5</button>
+<button class="hpBtn" data-dmg="10">+10</button>
+</td>
+
 <td contenteditable="true">${data.status}</td>
 `;
 
-tableBody.appendChild(row);
+    tableBody.appendChild(row);
+
+    setupHPButtons(row);
 
 }
 
-async function loadPlayers(){
+async function loadPlayers() {
 
-const players = await loadJSON("/data/players.json");
+    const players = await loadJSON("/data/players.json");
 
-players.forEach(player => {
+    players.forEach(player => {
 
-addRow({
-name: player.name,
-initiative: 0,
-hp: player.hp,
-status: ""
-});
+        addRow({
+            name: player.name,
+            initiative: 0,
+            hp: player.hp,
+            status: ""
+        });
 
-});
-
-}
-
-function sortInitiative(){
-
-const rows = [...tableBody.querySelectorAll("tr")];
-
-rows.sort((a,b)=>{
-
-const aInit = parseInt(a.children[1].textContent) || 0;
-const bInit = parseInt(b.children[1].textContent) || 0;
-
-return bInit - aInit;
-
-});
-
-tableBody.innerHTML = "";
-rows.forEach(r => tableBody.appendChild(r));
-
-turnIndex = -1;
+    });
 
 }
 
-function nextTurn(){
+function sortInitiative() {
 
-const rows = [...tableBody.querySelectorAll("tr")];
+    const rows = [...tableBody.querySelectorAll("tr")];
 
-if(rows.length === 0) return;
+    rows.sort((a, b) => {
 
-let attempts = 0;
+        const aInit = parseInt(a.children[1].textContent) || 0;
+        const bInit = parseInt(b.children[1].textContent) || 0;
 
-do {
+        return bInit - aInit;
 
-turnIndex++;
+    });
 
-if(turnIndex >= rows.length){
+    tableBody.innerHTML = "";
+    rows.forEach(r => tableBody.appendChild(r));
 
-turnIndex = 0;
-round++;
-roundDisplay.textContent = round;
+    turnIndex = -1;
 
 }
 
-const hp = parseInt(rows[turnIndex].children[2].textContent) || 0;
+function nextTurn() {
 
-if(hp > 0) break;
+    const rows = [...tableBody.querySelectorAll("tr")];
 
-attempts++;
+    if (rows.length === 0) return;
 
-} while(attempts < rows.length);
+    let attempts = 0;
 
-rows.forEach(r => r.classList.remove("active"));
+    do {
 
-const activeRow = rows[turnIndex];
+        turnIndex++;
 
-activeRow.classList.add("active");
+        if (turnIndex >= rows.length) {
 
-turnDisplay.textContent = activeRow.children[0].textContent;
+            turnIndex = 0;
+            round++;
+            roundDisplay.textContent = round;
+
+        }
+
+        const hp = parseInt(rows[turnIndex].querySelector(".hpValue").textContent) || 0;
+
+        if (hp > 0) break;
+
+        attempts++;
+
+    } while (attempts < rows.length);
+
+    rows.forEach(r => r.classList.remove("active"));
+
+    const activeRow = rows[turnIndex];
+
+    activeRow.classList.add("active");
+
+    turnDisplay.textContent = activeRow.children[0].textContent;
+
+}
+
+function setupHPButtons(row) {
+
+    const hpValue = row.querySelector(".hpValue");
+
+    row.querySelectorAll(".hpBtn").forEach(btn => {
+
+        btn.onclick = () => {
+
+            let hp = parseInt(hpValue.textContent) || 0;
+
+            hp += parseInt(btn.dataset.dmg);
+
+            if (hp < 0) hp = 0;
+
+            hpValue.textContent = hp;
+
+        };
+
+    });
 
 }
 

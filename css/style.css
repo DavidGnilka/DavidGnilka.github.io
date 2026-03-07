@@ -35,3 +35,21 @@ font-weight: bold;
 margin-top: 10px;
 font-size: 18px;
 }
+
+.hpCell {
+display: flex;
+gap: 4px;
+align-items: center;
+}
+
+.hpBtn {
+padding: 2px 6px;
+font-size: 12px;
+cursor: pointer;
+}
+
+.hpValue {
+min-width: 30px;
+text-align: center;
+font-weight: bold;
+}
