@@ -19,7 +19,7 @@ tableBody.appendChild(row);
 
 async function loadPlayers(){
 
-const players = await loadJSON("../data/players.json");
+const players = await loadJSON("../data/player_chars.json");
 
 players.forEach(player => {
 
