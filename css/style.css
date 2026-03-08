@@ -58,36 +58,48 @@ font-weight: bold;
 background-color: #ffd6d6;
 }
 
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-display:flex;
-justify-content:center;
-align-items:center;
+.modalContent{
+background:white;
+padding:30px;
+border-radius:10px;
+min-width:420px;
+font-size:18px;
+}
+
+.modalContent h2{
+margin-top:0;
+font-size:24px;
 }
 
 .monsterForm{
 display:grid;
-grid-template-columns:120px 1fr;
-gap:8px;
-margin-bottom:15px;
+grid-template-columns:160px 1fr;
+gap:12px;
+margin-bottom:20px;
 }
 
-.modalContent{
-background:white;
-padding:20px;
-border-radius:8px;
-min-width:320px;
+.monsterForm input,
+.monsterForm select{
+font-size:16px;
+padding:6px;
+}
+
+.diceDisplay{
+background:#f3f3f3;
+padding:6px 10px;
+border-radius:6px;
+font-weight:bold;
 }
 
 .modalButtons{
 display:flex;
 gap:10px;
 justify-content:flex-end;
+}
+
+.modalButtons button{
+font-size:16px;
+padding:6px 14px;
 }
 
 .hidden{

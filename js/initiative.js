@@ -35,8 +35,6 @@ function addRow(data = { name: "", initiative: 0, hp: 0, status: "" }) {
 <button class="hpBtn" data-dmg="10">+10</button>
 </td>
 
-<td contenteditable="true"></td>
-
 <td>
 <button class="deleteBtn">X</button>
 </td>
@@ -186,10 +184,7 @@ function clearEncounter() {
 
 }
 
-let monstersLoaded = false;
 async function loadMonsters() {
-
-    if (monstersLoaded) return;
 
     const { data } = await supabase
         .from("monsters")
@@ -197,25 +192,44 @@ async function loadMonsters() {
 
     const select = document.getElementById("monsterSelect");
 
+    select.innerHTML = "";
+
     data.forEach(monster => {
 
         const option = document.createElement("option");
 
         option.value = monster.id;
-        option.textContent =
-            monster.name + " (" +
-            monster.hp_dice + " / " +
-            monster.initiative_dice + ")";
+        option.textContent = monster.name;
 
         option.dataset.name = monster.name;
+        option.dataset.hpDice = monster.hp_dice;
+        option.dataset.initDice = monster.initiative_dice;
 
         select.appendChild(option);
 
     });
 
-    monstersLoaded = true;
+    updateMonsterDice();
 
 }
+
+function updateMonsterDice() {
+
+    const select = document.getElementById("monsterSelect");
+    const selected = select.selectedOptions[0];
+
+    if (!selected) return;
+
+    document.getElementById("monsterHPDice").textContent =
+        selected.dataset.hpDice;
+
+    document.getElementById("monsterInitDice").textContent =
+        selected.dataset.initDice;
+
+}
+
+document.getElementById("monsterSelect")
+    .addEventListener("change", updateMonsterDice);
 
 function getNextMonsterNumber(baseName) {
 

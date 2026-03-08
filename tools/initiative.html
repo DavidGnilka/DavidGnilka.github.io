@@ -30,12 +30,18 @@
 
         <div class="modalContent">
 
-            <h3>Monster hinzufügen</h3>
+            <h2>Monster hinzufügen</h2>
 
             <div class="monsterForm">
 
                 <label>Monster</label>
                 <select id="monsterSelect"></select>
+
+                <label>HP Würfel</label>
+                <div id="monsterHPDice" class="diceDisplay">-</div>
+
+                <label>Initiative Würfel</label>
+                <div id="monsterInitDice" class="diceDisplay">-</div>
 
                 <label>Initiative</label>
                 <input id="monsterInit" type="number" value="0">
@@ -51,6 +57,7 @@
             </div>
 
         </div>
+
     </div>
     <table id="tracker">
 
