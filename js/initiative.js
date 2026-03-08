@@ -139,27 +139,99 @@ function setupHPButtons(row) {
 }
 
 async function endEncounter() {
-
-    const changedRows = [...document.querySelectorAll("tr.changed")];
+    if (!confirm("Encounter wirklich beenden?")) return;
+    const changedRows = [...document.querySelectorAll("#tracker tbody tr.changed")];
 
     for (const row of changedRows) {
 
-        const name = row.children[0].textContent.trim();
+        const id = row.dataset.id;
         const hp = parseInt(row.querySelector(".hpValue").textContent) || 0;
 
         await supabase
             .from("players")
             .update({ hp: hp })
-            .eq("name", name);
-
-        row.classList.remove("changed");
+            .eq("id", id);
 
     }
 
-    alert("HP gespeichert");
+    clearEncounter();
+
+    alert("Encounter beendet und HP gespeichert");
 
 }
 
+function clearEncounter() {
+
+    const tableBody = document.querySelector("#tracker tbody");
+
+    tableBody.innerHTML = "";
+
+    turnIndex = -1;
+    round = 1;
+
+    document.getElementById("currentTurn").textContent = "-";
+    document.getElementById("round").textContent = "1";
+
+}
+
+async function loadMonsters() {
+
+    const { data } = await supabase
+        .from("monsters")
+        .select("*");
+
+    const select = document.getElementById("monsterSelect");
+
+    select.innerHTML = "";
+
+    data.forEach(monster => {
+
+        const option = document.createElement("option");
+
+        option.value = monster.id;
+
+        option.textContent =
+            monster.name +
+            " (HP " + monster.hp_dice +
+            ", Init " + monster.initiative_dice + ")";
+
+        option.dataset.name = monster.name;
+
+        select.appendChild(option);
+
+    });
+
+}
+
+document.getElementById("addMonsterConfirm").onclick = () => {
+
+    const select = document.getElementById("monsterSelect");
+
+    const name = select.selectedOptions[0].dataset.name;
+
+    addRow({
+        name: name,
+        hp: 0
+    });
+
+    document.getElementById("monsterModal")
+        .classList.add("hidden");
+
+};
+
+document.getElementById("addActor").onclick = () => {
+    document.getElementById("monsterModal")
+        .classList.remove("hidden");
+
+    loadMonsters();
+
+};
+document.getElementById("closeMonsterModal").onclick = () => {
+
+    document.getElementById("monsterModal")
+        .classList.add("hidden");
+
+};
 document.getElementById("endEncounter").onclick = endEncounter;
 document.getElementById("loadPlayers").onclick = loadPlayers;
 document.getElementById("addActor").onclick = () => addRow();

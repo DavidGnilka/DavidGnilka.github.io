@@ -1,47 +1,64 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-<meta charset="UTF-8">
-<title>Initiative Tracker</title>
 
-<link rel="stylesheet" href="../css/style.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Initiative Tracker</title>
+
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
 
-<h2>Initiative Tracker</h2>
+    <h2>Initiative Tracker</h2>
 
-<div class="controls">
+    <div class="controls">
 
-<button id="loadPlayers">Load Players</button>
-<button id="addActor">Add Actor</button>
-<button id="sortInit">Sort Initiative</button>
-<button id="nextTurn">Next Turn</button>
-<button id="endEncounter">Encounter beenden</button>
+        <button id="loadPlayers">Load Players</button>
+        <button id="addActor">Add Actor</button>
+        <button id="sortInit">Sort Initiative</button>
+        <button id="nextTurn">Next Turn</button>
+        <button id="endEncounter">Encounter beenden</button>
 
-<div class="turnInfo">
-Turn: <span id="currentTurn">-</span> |
-Round: <span id="round">1</span>
-</div>
+        <div class="turnInfo">
+            Turn: <span id="currentTurn">-</span> |
+            Round: <span id="round">1</span>
+        </div>
 
-</div>
+    </div>
+    <div id="monsterModal" class="modal hidden">
 
-<table id="tracker">
+        <div class="modalContent">
 
-<thead>
-<tr>
-<th>Name</th>
-<th>Init</th>
-<th>HP</th>
-<th>Status</th>
-</tr>
-</thead>
+            <h3>Monster hinzufügen</h3>
 
-<tbody></tbody>
+            <select id="monsterSelect"></select>
 
-</table>
+            <br><br>
 
-<script type="module" src="../js/initiative.js"></script>
+            <button id="addMonsterConfirm">Hinzufügen</button>
+            <button id="closeMonsterModal">Abbrechen</button>
+
+        </div>
+
+    </div>
+    <table id="tracker">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Init</th>
+                <th>HP</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody></tbody>
+
+    </table>
+
+    <script type="module" src="../js/initiative.js"></script>
 
 </body>
+
 </html>
