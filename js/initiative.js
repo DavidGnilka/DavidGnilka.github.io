@@ -234,6 +234,5 @@ document.getElementById("closeMonsterModal").onclick = () => {
 };
 document.getElementById("endEncounter").onclick = endEncounter;
 document.getElementById("loadPlayers").onclick = loadPlayers;
-document.getElementById("addActor").onclick = () => addRow();
 document.getElementById("sortInit").onclick = sortInitiative;
 document.getElementById("nextTurn").onclick = nextTurn;
